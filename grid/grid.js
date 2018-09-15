@@ -47,9 +47,36 @@ var ExpandTransition=Barba.BaseTransition.extend({
     this.done(); //After enlargeThumb is done set the new container visibility to zero
   }
 
+});
+
+
+var ShrinkTransition = Barba.BaseTransition.extend({
+  start: function(){
+    this.newContainerLoading.then(this.shrinkImage.bind(this));
+  },
+
+  shrinkImage: function(){
+    var _this=this;
+
+    this.oldContainer.style.zIndex = '10';
+    this.newContainer.style.visibility = 'visible';
+
+    var href = Barba.HistoryManager.prevStatus().url.split('/').pop(); //returns the last page visited
+    var destThumb = this.newContainer.querySelector('a[href="'+href+'"]'); //returns the a element with the link defined above
+    var destThumbPosition= destThumb.getBoundingClientRect();//gets the size and position of the thumb;
+    var fullImage= this.oldContainer.querySelector('.full');//returns the div with the class full and its children
+
+    TweenLite.to(this.oldContainer.querySelector('.back'), 0.2, {opacity:0});//changes the opacity of the link in the old container to zero
+
+    TweenLite.to(fullImage, 0.3,{
+      top:destThumbPosition.top,
+      height:destThumbPosition.clientHeight,
+      onComplete: function(){
+        _this.done();
+      }
+    });
+  }
 })
-
-
 
 Barba.Pjax.getTransition = function(){
   return ExpandTransition;
