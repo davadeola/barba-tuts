@@ -70,7 +70,7 @@ var ShrinkTransition = Barba.BaseTransition.extend({
 
     TweenLite.to(fullImage, 0.3,{
       top:destThumbPosition.top,
-      height:destThumbPosition.clientHeight,
+      height:destThumb.clientHeight,
       onComplete: function(){
         _this.done();
       }
@@ -79,6 +79,12 @@ var ShrinkTransition = Barba.BaseTransition.extend({
 })
 
 Barba.Pjax.getTransition = function(){
-  return ExpandTransition;
+ var transitionObj= ExpandTransition;
+
+ if(Barba.HistoryManager.prevStatus().namespace==='detail'){ //checks the previous pages' namespace
+   transitionObj =ShrinkTransition;
+ }
+
+ return transitionObj;
 }
 });
