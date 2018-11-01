@@ -62,7 +62,7 @@ a.nav {
 
 a.nav.next {
   -webkit-clip-path: circle(40px at 97% 50%);
-  /*circle(size at left margin degree of curvature);*/
+  /*circle(size at posX posY);*/
 }
 
 a.nav.prev {
