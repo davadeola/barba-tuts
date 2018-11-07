@@ -65,14 +65,14 @@ document.addEventListener("DOMContentLoaded", function() {
       return Barba.HistoryManager.currentStatus().url.split('/').pop();
     }, //gets the current page
 
-    getLinkHref: function(href) {
+    getLinkByHref: function(href) {
       return document.querySelector('a[href="' + href + '"]');
     },
 
     display: function() {
       var _this = this;
       //created a timeline with TimeLineMax
-      var tl = new TimeLineMax({
+      var tl = new TimelineMax({
         onComplete: function() {
           _this.newContainer.style.position = 'static';
           _this.done();
@@ -83,12 +83,10 @@ document.addEventListener("DOMContentLoaded", function() {
       var oldText = this.oldContainer.querySelector('.text');
       var newText = this.newContainer.querySelector('.text');
       var newLinkPrev = this.newContainer.querySelector('.nav.prev');
-      var newLinkNext = this.newContainer.querySelectorAll('.nav.next');
+      var newLinkNext = this.newContainer.querySelector('.nav.next');
 
-      var linkElement = this.getLinkHref(this.getNewPageFile());
-      var xCoord = linkElement.classList.contains('next')
-        ? '97'
-        : '3';
+      var linkElement = this.getLinkByHref(this.getNewPageFile());
+      var xCoord = linkElement.classList.contains('next') ? '97' : '3';
 
       TweenLite.set(linkElement, {zIndex: 100});
       TweenLite.set(this.newContainer, {
@@ -103,26 +101,21 @@ document.addEventListener("DOMContentLoaded", function() {
       });
 
       TweenLite.set(newText, {opacity: 0});
-      TweenLite.set(newLinkNext, {webkitClipPath: 'circle(0px at 97% 50% )'});
       TweenLite.set(newLinkPrev, {webkitClipPath: 'cicle(0px at 3% 50%)'});
 
+      TweenLite.set(newLinkNext, {webkitClipPath: 'circle(0px at 97% 50% )'});
+
       tl.add('start');
-      tl.to(oldText, 0.3, {
-        opacity: 0
-      }, 'start');
-      tl.to(linkElement, 1, {
-        webkitClipPath: 'circle(' + wWidth + 'px at ' + xCoord + '% 50% )'
-      }, 'start');
+      tl.to(oldText, 0.3, {opacity: 0}, 'start');
+      tl.to(linkElement, 1, { webkitClipPath: 'circle(' + wWidth + 'px at ' + xCoord + '% 50%)'}, 'start');
       tl.to(this.newContainer, 0.3, {opacity: 1});
       tl.to(newText, 0.3, {opacity: 1});
 
-      tl.add('newLinks');
-      tl.to(newLinkPrev, 0.2, {
-        webkitClipPath: 'cirlce(50px at 3% 50%)'
-      }, 'newLinks');
-      tl.to(newLinkPrev, 0.2, {
-        webkitClipPath: 'cirlce(50px at 97% 50%)'
-      }, 'newLinks');
+      tl.add('nextLinks');
+      tl.to(newLinkPrev, 0.2, {webkitClipPath: 'cirlce(40px at 3% 50%)'
+      }, 'nextLinks');
+      tl.to(newLinkNext, 0.2, {webkitClipPath: 'cirlce(40px at 97% 50%)'
+      }, 'nextLinks');
     }
   });
 
