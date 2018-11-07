@@ -53,6 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
             deferred.resolve();
           }
           window.scroll(0, obj.y) //window.scroll(xcoord, y-coord);
+          //if the window is already scrolled to the top resolve the deferr.
         },
         onComplete: function() {
           deferred.resolve();
@@ -67,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     getLinkByHref: function(href) {
       return document.querySelector('a[href="' + href + '"]');
+      //returns the node that has the a tag with that specific href attribute specified
     },
 
     display: function() {
@@ -87,7 +89,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
       var linkElement = this.getLinkByHref(this.getNewPageFile());
       var xCoord = linkElement.classList.contains('next') ? '97' : '3';
-
+      //gets the element in the DOM that has the link specifed
+      //note the currentStatus now is the nextpage clicked not the oldContainer
       TweenLite.set(linkElement, {zIndex: 100});
       TweenLite.set(this.newContainer, {
         position: 'fixed',
@@ -104,14 +107,16 @@ document.addEventListener("DOMContentLoaded", function() {
       TweenLite.set(newLinkPrev, {webkitClipPath: 'cicle(0px at 3% 50%)'});
 
       TweenLite.set(newLinkNext, {webkitClipPath: 'circle(0px at 97% 50% )'});
+      //sets every element in the new container to a starter state before we animate
 
-      tl.add('start');
+      tl.add('start');//starts the animation and adds a label(section) called start.
       tl.to(oldText, 0.3, {opacity: 0}, 'start');
       tl.to(linkElement, 1, { webkitClipPath: 'circle(' + wWidth + 'px at ' + xCoord + '% 50%)'}, 'start');
+      //animations below executed one after the other after start has finished
       tl.to(this.newContainer, 0.3, {opacity: 1});
       tl.to(newText, 0.3, {opacity: 1});
 
-      tl.add('nextLinks');
+      tl.add('nextLinks');//by creating a new label called nextLinks makes all the animation to be executed at the same time
       tl.to(newLinkPrev, 0.2, {webkitClipPath: 'cirlce(40px at 3% 50%)'
       }, 'nextLinks');
       tl.to(newLinkNext, 0.2, {webkitClipPath: 'cirlce(40px at 97% 50%)'
